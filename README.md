@@ -1,16 +1,14 @@
-## Hi there 👋
+# Hi, I'm Khoa 👋
 
-<!--
-**opkhoa2k92-droid/opkhoa2k92-droid** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+- 🎯 **Focus:** Competitive Programming | C++ | Data Structures & Algorithms
 
-Here are some ideas to get you started:
+### 🏆 Achievements
+- 🥇 **First Prize** - Provincial Olympiad in Informatics (2026)
+- 🥈 **Second Prize** - Southern Region Youth Informatics Competition (2026)
+- 🥉 **Third Prize** - Dong Nai Provincial Youth Informatics Competition (2026)
+- 🏅 **Consolation Prize** - Provincial Olympiad in Informatics (2025)
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+---
+
+### ⚔️ Codeforces Status
+![Codeforces Card](https://codeforces-readme-stats.vercel.app/api/card?username=dona09khoa_nt&theme=dark)
