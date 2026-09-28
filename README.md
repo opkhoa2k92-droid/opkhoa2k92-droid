@@ -12,4 +12,4 @@
 
 ### ⚔️ Codeforces Rating Graph
 
-![Codeforces Rating Graph](https://codeforces-readme-stats.vercel.app/api/embed?username=dona09khoa_nt)
+![Codeforces Rating Graph](https://cf-card.deno.dev/graph/dona09khoa_nt)
