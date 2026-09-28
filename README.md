@@ -12,4 +12,4 @@
 
 ### ⚔️ Codeforces
 
-[![Codeforces Rating](https://img.shields.io/badge/dynamic/json?style=for-the-badge&label=Codeforces&logo=codeforces&query=$.result[0].rating&url=https://codeforces.com/api/user.info?handles=dona09khoa_nt&color=1f8acb)](https://codeforces.com/profile/ID_CỦA_ÔNG)
+![Codeforces Stats](https://codeforces-readme-stats.vercel.app/api/card?username=dona09khoa_nt&theme=dark)
