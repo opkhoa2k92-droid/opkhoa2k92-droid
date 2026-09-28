@@ -2,16 +2,19 @@ name: Update Codeforces Rating Graph
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Tự động chạy mỗi ngày 1 lần
-  workflow_dispatch: # Cho phép bấm chạy thủ công bằng tay
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-graph:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       - name: Install dependencies
@@ -29,24 +32,29 @@ jobs:
               dates = [datetime.datetime.fromtimestamp(c['ratingUpdateTimeSeconds']) for c in contests]
               ratings = [c['newRating'] for c in contests]
 
-              plt.figure(figsize=(8, 3.5), facecolor='none')
-              ax = plt.gca()
-              ax.set_facecolor('#0d1117') # Màu nền trùng hợp với GitHub Dark Theme
+              fig, ax = plt.subplots(figsize=(8, 4), facecolor='none')
+              ax.set_facecolor('#0d1117')
               
-              # Tọa độ dải màu Rank
-              plt.axhspan(0, 1199, color='#cccccc', alpha=0.3)   # Newbie
-              plt.axhspan(1200, 1399, color='#77ff77', alpha=0.3) # Pupil
-              plt.axhspan(1400, 1599, color='#77ddbb', alpha=0.3) # Specialist
-              plt.axhspan(1600, 1899, color='#aaaaff', alpha=0.3) # Expert
+              plt.axhspan(0, 1199, color='#cccccc', alpha=0.25)
+              plt.axhspan(1200, 1399, color='#77ff77', alpha=0.25)
+              plt.axhspan(1400, 1599, color='#77ddbb', alpha=0.25)
+              plt.axhspan(1600, 1899, color='#aaaaff', alpha=0.25)
 
-              plt.plot(dates, ratings, color='#ffcc00', marker='o', linewidth=2)
-              plt.tick_params(colors='white')
+              plt.plot(dates, ratings, color='#ffcc00', marker='o', linewidth=2.5, markersize=6)
+
+              for date, rating in zip(dates, ratings):
+                  ax.annotate(f'{rating}', (date, rating), textcoords='offset points', 
+                              xytext=(0,8), ha='center', color='#ffffff', fontweight='bold', fontsize=9)
+
+              ax.tick_params(colors='white', labelsize=8)
+              ax.grid(True, color='#30363d', linestyle='--', linewidth=0.5, alpha=0.7)
+
               for spine in ax.spines.values():
                   spine.set_color('#30363d')
 
-              plt.title('Codeforces Rating Progress', color='white')
+              plt.title('Codeforces Rating Progress', color='white', fontweight='bold', pad=12)
               plt.tight_layout()
-              plt.savefig('cf_rating.png', transparent=True)
+              plt.savefig('cf_rating.png', transparent=True, dpi=150)
           "
       - name: Commit and Push
         run: |
