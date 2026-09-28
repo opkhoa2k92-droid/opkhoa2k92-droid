@@ -1,0 +1,57 @@
+name: Update Codeforces Rating Graph
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Tự động chạy mỗi ngày 1 lần
+  workflow_dispatch: # Cho phép bấm chạy thủ công bằng tay
+
+jobs:
+  update-graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests matplotlib
+      - name: Generate Rating Graph
+        run: |
+          python -c "
+          import requests
+          import matplotlib.pyplot as plt
+          import datetime
+
+          res = requests.get('https://codeforces.com/api/user.rating?handle=dona09khoa_nt').json()
+          if res['status'] == 'OK' and len(res['result']) > 0:
+              contests = res['result']
+              dates = [datetime.datetime.fromtimestamp(c['ratingUpdateTimeSeconds']) for c in contests]
+              ratings = [c['newRating'] for c in contests]
+
+              plt.figure(figsize=(8, 3.5), facecolor='none')
+              ax = plt.gca()
+              ax.set_facecolor('#0d1117') # Màu nền trùng hợp với GitHub Dark Theme
+              
+              # Tọa độ dải màu Rank
+              plt.axhspan(0, 1199, color='#cccccc', alpha=0.3)   # Newbie
+              plt.axhspan(1200, 1399, color='#77ff77', alpha=0.3) # Pupil
+              plt.axhspan(1400, 1599, color='#77ddbb', alpha=0.3) # Specialist
+              plt.axhspan(1600, 1899, color='#aaaaff', alpha=0.3) # Expert
+
+              plt.plot(dates, ratings, color='#ffcc00', marker='o', linewidth=2)
+              plt.tick_params(colors='white')
+              for spine in ax.spines.values():
+                  spine.set_color('#30363d')
+
+              plt.title('Codeforces Rating Progress', color='white')
+              plt.tight_layout()
+              plt.savefig('cf_rating.png', transparent=True)
+          "
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "actions@github.com"
+          git add cf_rating.png
+          git commit -m "Update Codeforces Rating Graph" || exit 0
+          git push
