@@ -1,10 +1,6 @@
 # Hi, I'm Khoa 👋
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=38BDF8&width=435&lines=Competitive+Programmer;C%2B%2B+%26+Algorithms;High+School+Student)](https://git.io/typing-svg)
----
-<p align="center">
-  👀 <b>Profile Views:</b> <img src="https://komarev.com/ghpvc/?username=opkhoa2k92-droid&color=007acc&style=flat-square" alt="Visitor Counter" />
-</p>
 - 🎯 **Focus:** Competitive Programming | C++ | Data Structures & Algorithms
 
 ### 🏆 Achievements
