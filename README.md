@@ -11,4 +11,5 @@
 ---
 
 ### ⚔️ Codeforces Status
-![Codeforces Card](https://codeforces-readme-stats.vercel.app/api/card?username=dona09khoa_nt&theme=dark)
+
+![Codeforces Card](https://cf-card.deno.dev/handle/dona09khoa_nt?theme=dark)
