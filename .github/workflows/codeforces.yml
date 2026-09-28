@@ -24,6 +24,7 @@ jobs:
           python -c "
           import requests
           import matplotlib.pyplot as plt
+          import matplotlib.dates as mdates
           import datetime
 
           res = requests.get('https://codeforces.com/api/user.rating?handle=dona09khoa_nt').json()
@@ -32,29 +33,46 @@ jobs:
               dates = [datetime.datetime.fromtimestamp(c['ratingUpdateTimeSeconds']) for c in contests]
               ratings = [c['newRating'] for c in contests]
 
-              fig, ax = plt.subplots(figsize=(8, 4), facecolor='none')
-              ax.set_facecolor('#0d1117')
+              fig, ax = plt.subplots(figsize=(9, 4.5), dpi=150)
               
-              plt.axhspan(0, 1199, color='#cccccc', alpha=0.25)
-              plt.axhspan(1200, 1399, color='#77ff77', alpha=0.25)
-              plt.axhspan(1400, 1599, color='#77ddbb', alpha=0.25)
-              plt.axhspan(1600, 1899, color='#aaaaff', alpha=0.25)
+              # Dải màu chuẩn Codeforces (Độ đậm 100% không mờ)
+              plt.axhspan(0, 1199, color='#CCCCCC', alpha=1.0)     # Newbie (Gray)
+              plt.axhspan(1200, 1399, color='#77FF77', alpha=1.0)   # Pupil (Green)
+              plt.axhspan(1400, 1599, color='#77DDBB', alpha=1.0)   # Specialist (Cyan)
+              plt.axhspan(1600, 1899, color='#AAAAFF', alpha=1.0)   # Expert (Blue)
+              plt.axhspan(1900, 2199, color='#FF88FF', alpha=1.0)   # Candidate Master (Purple)
 
-              plt.plot(dates, ratings, color='#ffcc00', marker='o', linewidth=2.5, markersize=6)
+              # Đường nối màu vàng + điểm chấm viền đỏ chuẩn Codeforces
+              plt.plot(dates, ratings, color='#FFCC00', linewidth=2.5, zorder=3)
+              plt.scatter(dates, ratings, color='#FF0000', edgecolors='#FFCC00', s=45, linewidth=1.5, zorder=4)
 
+              # Hiển thị chỉ số rating trên từng điểm
               for date, rating in zip(dates, ratings):
                   ax.annotate(f'{rating}', (date, rating), textcoords='offset points', 
-                              xytext=(0,8), ha='center', color='#ffffff', fontweight='bold', fontsize=9)
+                              xytext=(0, 8), ha='center', color='#FFFFFF', fontweight='bold', fontsize=10,
+                              bbox=dict(boxstyle='round,pad=0.2', facecolor='#800000', alpha=0.8, edgecolor='none'))
 
-              ax.tick_params(colors='white', labelsize=8)
-              ax.grid(True, color='#30363d', linestyle='--', linewidth=0.5, alpha=0.7)
+              # Cấu hình mốc Y chuẩn Codeforces
+              ax.set_yticks([1200, 1400, 1600, 1900])
+              ax.get_yaxis().set_major_formatter(plt.ScalarFormatter())
+              ax.tick_params(axis='y', colors='#333333', labelsize=10)
 
+              # Cấu hình mốc X (Ngày tháng)
+              ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b\n%Y'))
+              ax.tick_params(axis='x', colors='#333333', labelsize=8.5)
+
+              # Lưới dọc xám mờ + khung viền
+              ax.grid(True, which='both', axis='x', color='#888888', linestyle='-', linewidth=0.5, alpha=0.5)
               for spine in ax.spines.values():
-                  spine.set_color('#30363d')
+                  spine.set_color('#333333')
+                  spine.set_linewidth(1.2)
 
-              plt.title('Codeforces Rating Progress', color='white', fontweight='bold', pad=12)
+              # Giới hạn trục Y phù hợp
+              max_r = max(ratings) if len(ratings) > 0 else 1200
+              ax.set_ylim(min(ratings) - 150 if len(ratings) > 0 else 0, max(2000, max_r + 150))
+
               plt.tight_layout()
-              plt.savefig('cf_rating.png', transparent=True, dpi=150)
+              plt.savefig('cf_rating.png', bbox_inches='tight')
           "
       - name: Commit and Push
         run: |
